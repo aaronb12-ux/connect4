@@ -2,16 +2,22 @@
 
 import { useState } from 'react';
 import Board from './Board';
+
 import {
-check_column
-} from '../lib/connect4logic.js'
+    check_column,
+    column_is_full,
+} from '../lib/place_piece.js'
+
+import {
+    check_win
+} from '../lib/win_conditions.js'
 
 const PLAYER_1 = 0
 const PLAYER_2 = 1
 
-function place_piece(column: any, tiles: any, playerTurn: any)
+function place_piece(column: number[], tiles: number[], playerTurn: number)
 {
-    let filled_in_index = check_column(column, tiles)
+    const filled_in_index = check_column(column, tiles)
     tiles[filled_in_index] = playerTurn;
     return tiles;
 }
@@ -22,9 +28,10 @@ export default function Connect4()
     const [tiles, setTiles] = useState<number[]>(Array(42).fill(null));
     const [playerTurn, setPlayerTurn] = useState(PLAYER_1);
 
-    const handleClick = (index: any) =>
+    const handleClick = (index: number) =>
     {
 
+        let column_full = false
 
         let new_tiles = [...tiles]
         const column1 = [0, 7, 14, 21, 28, 35]
@@ -38,48 +45,74 @@ export default function Connect4()
         //check if the column is full. if the player clicks on a full column, don't do anything
         if (column1.includes(index))
         {
+            column_full = column_is_full(column1, tiles)
             new_tiles = place_piece(column1, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
+
         }
         else if (column2.includes(index))
         {
+            column_full = column_is_full(column2, tiles)
             new_tiles = place_piece(column2, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
         }
         else if (column3.includes(index))
         {
+            column_full = column_is_full(column3, tiles)
             new_tiles = place_piece(column3, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
         }
         else if (column4.includes(index))
         {
+            column_full = column_is_full(column4, tiles)
             new_tiles = place_piece(column4, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
         }
         else if (column5.includes(index))
         {
+            column_full = column_is_full(column5, tiles)
             new_tiles = place_piece(column5, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
         }
         else if (column6.includes(index))
         {
+            column_full = column_is_full(column6, tiles)
             new_tiles = place_piece(column6, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
         }
         else if (column7.includes(index))
         {
+            column_full = column_is_full(column7, tiles)
             const new_tiles = place_piece(column7, tiles, playerTurn);
             setTiles(new_tiles);
+            check_win(new_tiles, index, playerTurn);
         }
 
-        if (playerTurn === 0)
+        if (playerTurn === PLAYER_1)
         {
-            setPlayerTurn(1);
+            if (column_full) {
+                setPlayerTurn(PLAYER_1);
+            }
+            else {
+                setPlayerTurn(PLAYER_2);
+            }
         }
-        else
+        else if (playerTurn === PLAYER_2)
         {
-            setPlayerTurn(0);
+            if (column_full) {
+                setPlayerTurn(PLAYER_2);
+            }
+            else {
+                setPlayerTurn(PLAYER_1);
+            }
         }
+
     }
 
     return(
@@ -92,5 +125,4 @@ export default function Connect4()
         </div>
     )
 }
-
 

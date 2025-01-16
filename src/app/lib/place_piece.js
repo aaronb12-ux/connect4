@@ -9,12 +9,13 @@ function place_piece(column, tiles)
     }
 }
 
-function column_is_full(column, tiles)
+export function column_is_full(column, tiles)
 {
     for (let i = column.length - 1; i >= 0; i--)
     {
         if (tiles[column[i]] === null)
         {
+
             return false;
         }
     }
@@ -24,12 +25,6 @@ function column_is_full(column, tiles)
 
 export function check_column(column, tiles)
 {
-    if (column_is_full(column, tiles))
-    {
-       return;
-    }
-
     return place_piece(column, tiles);
 }
-
 

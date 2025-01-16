@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error
 function Cell({value, onClick, playerTurn}) {
     if (value == 0)
     {
@@ -15,7 +15,7 @@ function Cell({value, onClick, playerTurn}) {
     else
     {
         return (
-            <div onClick={onClick} className={"w-10 h-10 rounded-full bg-gray-50 cursor-pointer"}></div>
+            <div onClick={onClick} className={"w-10 h-10 rounded-full bg-slate-800 cursor-pointer"}></div>
         );
     }
 }

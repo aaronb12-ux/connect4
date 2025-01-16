@@ -1,6 +1,7 @@
 import Cell from './Cell';
 
-function Board({ tiles, onTileClick, playerTurn }) {
+
+function Board({tiles, onTileClick, playerTurn}) {
     //Helper function to determine if a cell should have rounded corners
     const getCellRounding = (index: number) => {
         if (index === 0) return "rounded-tl-md"
