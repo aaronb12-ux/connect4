@@ -1,4 +1,4 @@
-function place_piece(column, tiles)
+export function place_piece(column, tiles)
 {
     for (let i = column.length - 1; i >= 0; i--)
     {
@@ -23,8 +23,4 @@ export function column_is_full(column, tiles)
 }
 
 
-export function check_column(column, tiles)
-{
-    return place_piece(column, tiles);
-}
 

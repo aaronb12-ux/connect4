@@ -67,7 +67,7 @@ function diagonal_win_left(tiles, index, playerturn) {
     if ((tiles[index] === playerturn) && (tiles[index + 6] === playerturn)
         && (tiles[index + 12] === playerturn) && (tiles[index + 18] === playerturn)) {
 
-        console.log("win");
+
         return true;
     }
 

@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import Board from './Board';
+import GameOver from './GameOver';
+import GameState from "../lib/gamestate";
 
 import {
-    check_column,
-    column_is_full,
+   place_piece,
+    column_is_full
 } from '../lib/place_piece.js'
 
 import {
@@ -14,105 +16,60 @@ import {
 
 const PLAYER_1 = 0
 const PLAYER_2 = 1
+const columns = [
+    [0, 7, 14, 21, 28, 35],
+    [1, 8, 15, 22, 29, 36],
+    [2, 9, 16, 23, 30, 37],
+    [3, 10, 17, 24, 31, 38],
+    [4, 11, 18, 25, 32, 39],
+    [5, 12, 19, 26, 33, 40],
+    [6, 13, 20, 27, 34, 41]
+]
 
-function place_piece(column: number[], tiles: number[], playerTurn: number)
-{
-    const filled_in_index = check_column(column, tiles)
-    tiles[filled_in_index] = playerTurn;
-    return tiles;
-}
 
 export default function Connect4()
 {
     //creating the board state. Making an array of 6 and then within each subarray, there are 7 more values
     const [tiles, setTiles] = useState<number[]>(Array(42).fill(null));
     const [playerTurn, setPlayerTurn] = useState(PLAYER_1);
+    const [gameState, setGameState] = useState(GameState.inProgress);
+
 
     const handleClick = (index: number) =>
     {
+        const new_tiles = [...tiles]
+        //need to get the correct column[i] of the index
+        const column = columns.find(arr => arr.includes(index));
 
-        let column_full = false
+        if (column)
+        {
+           const placed_piece = place_piece(column, tiles) //return the most open space in the column
+           new_tiles[placed_piece] = playerTurn
+           setTiles(new_tiles)
+           if (check_win(new_tiles, placed_piece, playerTurn))
+           {
 
-        let new_tiles = [...tiles]
-        const column1 = [0, 7, 14, 21, 28, 35]
-        const column2 = [1, 8, 15, 22, 29, 36]
-        const column3 = [2, 9, 16, 23, 30, 37]
-        const column4 = [3, 10, 17, 24, 31, 38]
-        const column5 = [4, 11, 18, 25, 32, 39]
-        const column6 = [5, 12, 19, 26, 33, 40]
-        const column7 = [6, 13, 20, 27, 34, 41]
-
-        //check if the column is full. if the player clicks on a full column, don't do anything
-        if (column1.includes(index))
-        {
-            column_full = column_is_full(column1, tiles)
-            new_tiles = place_piece(column1, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
-
-        }
-        else if (column2.includes(index))
-        {
-            column_full = column_is_full(column2, tiles)
-            new_tiles = place_piece(column2, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
-        }
-        else if (column3.includes(index))
-        {
-            column_full = column_is_full(column3, tiles)
-            new_tiles = place_piece(column3, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
-        }
-        else if (column4.includes(index))
-        {
-            column_full = column_is_full(column4, tiles)
-            new_tiles = place_piece(column4, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
-        }
-        else if (column5.includes(index))
-        {
-            column_full = column_is_full(column5, tiles)
-            new_tiles = place_piece(column5, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
-        }
-        else if (column6.includes(index))
-        {
-            column_full = column_is_full(column6, tiles)
-            new_tiles = place_piece(column6, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
-        }
-        else if (column7.includes(index))
-        {
-            column_full = column_is_full(column7, tiles)
-            const new_tiles = place_piece(column7, tiles, playerTurn);
-            setTiles(new_tiles);
-            check_win(new_tiles, index, playerTurn);
+               if (playerTurn === PLAYER_1)
+               {
+                   setGameState(GameState.player1wins)
+               }
+               else
+               {
+                   setGameState(GameState.player2wins)
+               }
+           }
         }
 
-        if (playerTurn === PLAYER_1)
-        {
-            if (column_full) {
-                setPlayerTurn(PLAYER_1);
-            }
-            else {
-                setPlayerTurn(PLAYER_2);
-            }
-        }
-        else if (playerTurn === PLAYER_2)
-        {
-            if (column_full) {
-                setPlayerTurn(PLAYER_2);
-            }
-            else {
-                setPlayerTurn(PLAYER_1);
-            }
-        }
-
+       if(playerTurn === PLAYER_1)
+       {
+           if(column_is_full(column, tiles)) setPlayerTurn(PLAYER_1)
+           else setPlayerTurn(PLAYER_2)
+       }
+       else
+       {
+           if(column_is_full(column, tiles)) setPlayerTurn(PLAYER_2)
+           setPlayerTurn(PLAYER_1)
+       }
     }
 
     return(
@@ -122,6 +79,9 @@ export default function Connect4()
                 onTileClick={handleClick}
                 playerTurn={playerTurn}
             />
+            <GameOver
+                 gameState={gameState}
+                />
         </div>
     )
 }
