@@ -46,6 +46,12 @@ export default function Connect4()
 
     const handleClick = (index: number) =>
     {
+
+        if (index === null)
+        {
+            return;
+        }
+
         const new_tiles = [...tiles]
         //need to get the correct column[i] of the index
         const column = columns.find(arr => arr.includes(index));

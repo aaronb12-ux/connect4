@@ -68,15 +68,18 @@ function vertical_win(tiles, index, playerturn) {
 
 function diagonal_win_right(tiles, index, playerturn) {
     if (tiles[index] === playerturn && tiles[index + 8] === playerturn
-        && tiles[index + 16] === playerturn && tiles[index + 24] === playerturn) {
+        && tiles[index + 16] === playerturn && tiles[index + 24] === playerturn)
+    {
+        console.log("jo")
+        return rdiagonal_wrap_right(index);
 
-        return true;
     }
 
     else if (tiles[index] === playerturn && tiles[index - 8] === playerturn
         && tiles[index - 16] === playerturn && tiles[index - 24] === playerturn) {
 
-        return true;
+        console.log("hi");
+        return rdiagonal_wrap_left(index);
     }
 
     return false;
@@ -116,15 +119,27 @@ function wrap_around_right(tiles, index)
 
 }
 
-function diagonal_wrap_right(tiles, index)
+function rdiagonal_wrap_right( index)
 {
-    //check if pieces are in the same column
+    //check if pieces are in the incramenting columns
     const first = Math.floor(index / 7) //column of first index. should be incramenting columns
-    const second = Math.floor(index + 8 / 7);
-    const third = Math.floor(index + 16 / 7);
-    const fourth = Math.floor(index + 24 / 7);
+    const second = Math.floor((index + 8) / 7);
+    const third = Math.floor((index + 16) / 7);
+    const fourth = Math.floor((index + 24) / 7);
 
+    return (second === first + 1) && (third === first + 2) && (fourth === first + 3);
 
 }
+
+function rdiagonal_wrap_left(index)
+{
+    const first = Math.floor(index / 7) //column of first index. should be incramenting columns
+    const second = Math.floor((index - 8) / 7);
+    const third = Math.floor((index - 16) / 7);
+    const fourth = Math.floor((index - 24) / 7);
+
+    return (second === first - 1) && (third === first - 2) && (fourth === first - 3);
+}
+
 
 
