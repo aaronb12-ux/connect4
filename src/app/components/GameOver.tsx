@@ -24,7 +24,12 @@ export function GameOver({gameState}) {
             </h1>
 
         case GameState.draw:
-            return <div>Draw</div>
+            return <h1 className="text-5xl font-black text-center my-8 text-blue-300 animate-pulse tracking-widest relative">
+                Draw!
+                <span className="absolute inset-0 text-blue-500 blur-sm animate-pulse">
+                    Draw!
+                </span>
+            </h1>
 
         default:
             return <></>

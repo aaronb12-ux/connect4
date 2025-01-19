@@ -8,7 +8,7 @@ export default function Page()
 {
     return(
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-5xl font-black text-center my-8 text-yellow-300 animate-pulse tracking-widest relative after:content-['Connect_4'] after:text-yellow-500 after:absolute after:left-0 after:right-0 after:blur-sm">
+            <h1 className="text-5xl font-black text-center my-8 text-blue-300 animate-pulse tracking-widest relative after:content-['Connect_4'] after:text-blue-500 after:absolute after:left-0 after:right-0 after:blur-sm">
                 Connect 4
             </h1>
             <Connect4/>

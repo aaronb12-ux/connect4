@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Board from './Board';
 import GameOver from './GameOver';
 import GameState from "../lib/gamestate";
+import Reset from './Reset';
 
 import {
    place_piece,
@@ -11,7 +12,8 @@ import {
 } from '../lib/place_piece.js'
 
 import {
-    check_win
+    check_win,
+    tie_game
 } from '../lib/win_conditions.js'
 
 const PLAYER_1 = 0
@@ -27,13 +29,20 @@ const columns = [
 ]
 
 
+
 export default function Connect4()
 {
     //creating the board state. Making an array of 6 and then within each subarray, there are 7 more values
     const [tiles, setTiles] = useState<number[]>(Array(42).fill(null));
     const [playerTurn, setPlayerTurn] = useState(PLAYER_1);
     const [gameState, setGameState] = useState(GameState.inProgress);
+    const [hoveredColumn, setHoveredColumn] = useState<number | null>(null);
 
+    const handleReset = () => {
+        setGameState(GameState.inProgress);
+        setTiles(new Array(42).fill(null));
+        setPlayerTurn(PLAYER_1)
+    }
 
     const handleClick = (index: number) =>
     {
@@ -46,29 +55,45 @@ export default function Connect4()
            const placed_piece = place_piece(column, tiles) //return the most open space in the column
            new_tiles[placed_piece] = playerTurn
            setTiles(new_tiles)
-           if (check_win(new_tiles, placed_piece, playerTurn))
-           {
+
+
+            if(tie_game(tiles))
+            {
+                setGameState(GameState.draw)
+            }
+
+            else if (check_win(new_tiles, placed_piece, playerTurn))
+            {
 
                if (playerTurn === PLAYER_1)
                {
                    setGameState(GameState.player1wins)
                }
-               else
+               else if (playerTurn === PLAYER_2)
                {
                    setGameState(GameState.player2wins)
                }
            }
         }
 
-       if(playerTurn === PLAYER_1)
-       {
-           if(column_is_full(column, tiles)) setPlayerTurn(PLAYER_1)
+       if(playerTurn === PLAYER_1) {
+
+           if (column_is_full(column, tiles))
+           {
+           setPlayerTurn(PLAYER_1)
+           }
            else setPlayerTurn(PLAYER_2)
        }
-       else
+       else if (playerTurn === PLAYER_2)
        {
-           if(column_is_full(column, tiles)) setPlayerTurn(PLAYER_2)
-           setPlayerTurn(PLAYER_1)
+           if(column_is_full(column, tiles))
+           {
+               setPlayerTurn(PLAYER_2)
+           }
+           else
+           {
+               setPlayerTurn(PLAYER_1)
+           }
        }
     }
 
@@ -78,9 +103,14 @@ export default function Connect4()
                 tiles={tiles}
                 onTileClick={handleClick}
                 playerTurn={playerTurn}
+                hoveredColumn={hoveredColumn}
+                setHoveredColumn={setHoveredColumn}
             />
             <GameOver
                  gameState={gameState}
+                />
+            <Reset
+                gameState={gameState} onReset={handleReset}
                 />
         </div>
     )
