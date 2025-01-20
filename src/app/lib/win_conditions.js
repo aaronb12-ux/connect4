@@ -70,15 +70,12 @@ function diagonal_win_right(tiles, index, playerturn) {
     if (tiles[index] === playerturn && tiles[index + 8] === playerturn
         && tiles[index + 16] === playerturn && tiles[index + 24] === playerturn)
     {
-        console.log("jo")
         return rdiagonal_wrap_right(index);
-
     }
 
     else if (tiles[index] === playerturn && tiles[index - 8] === playerturn
-        && tiles[index - 16] === playerturn && tiles[index - 24] === playerturn) {
-
-        console.log("hi");
+        && tiles[index - 16] === playerturn && tiles[index - 24] === playerturn)
+    {
         return rdiagonal_wrap_left(index);
     }
 
@@ -88,18 +85,19 @@ function diagonal_win_right(tiles, index, playerturn) {
 
 
 function diagonal_win_left(tiles, index, playerturn) {
+
+
     if ((tiles[index] === playerturn) && (tiles[index + 6] === playerturn)
-        && (tiles[index + 12] === playerturn) && (tiles[index + 18] === playerturn)) {
-
-
-        return true;
+        && (tiles[index + 12] === playerturn) && (tiles[index + 18] === playerturn))
+    {
+        return ldiagonal_wrap_right(index);
     }
 
     else if ((tiles[index] === playerturn) && (tiles[index - 6] === playerturn)
         && (tiles[index - 12] === playerturn) && (tiles[index - 18] === playerturn)) {
 
 
-        return true;
+        return ldiagonal_wrap_left(index);
     }
 
     return false;
@@ -142,4 +140,23 @@ function rdiagonal_wrap_left(index)
 }
 
 
+function ldiagonal_wrap_right(index)
+{
+    const first = Math.floor(index / 7) //column of first index. should be incramenting columns
+    const second = Math.floor((index + 6) / 7);
+    const third = Math.floor((index + 12) / 7);
+    const fourth = Math.floor((index + 18) / 7);
+
+    return (second === first + 1) && (third === first + 2) && (fourth === first + 3);
+}
+
+function ldiagonal_wrap_left(index)
+{
+    const first = Math.floor(index / 7) //column of first index. should be incramenting columns
+    const second = Math.floor((index - 6) / 7);
+    const third = Math.floor((index - 12) / 7);
+    const fourth = Math.floor((index - 18) / 7);
+
+    return (second === first - 1) && (third === first - 2) && (fourth === first - 3);
+}
 

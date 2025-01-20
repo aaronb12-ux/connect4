@@ -47,7 +47,7 @@ export default function Connect4()
     const handleClick = (index: number) =>
     {
 
-        if (index === null)
+        if (index === -1)
         {
             return;
         }
@@ -66,6 +66,7 @@ export default function Connect4()
             if(tie_game(tiles))
             {
                 setGameState(GameState.draw)
+
             }
 
             else if (check_win(new_tiles, placed_piece, playerTurn))
@@ -73,11 +74,16 @@ export default function Connect4()
 
                if (playerTurn === PLAYER_1)
                {
+
                    setGameState(GameState.player1wins)
+
                }
                else if (playerTurn === PLAYER_2)
                {
+
                    setGameState(GameState.player2wins)
+
+
                }
            }
         }

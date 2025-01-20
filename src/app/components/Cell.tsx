@@ -31,17 +31,20 @@ function Cell({value, onClick, playerTurn, tiles, index, hoveredColumn, setHover
     //pass it into the return div
     let hover_class = null
     const columnNumber = columns.findIndex(arr => arr.includes(index));
+
     if (value === null && hoveredColumn !== null) {
         const column = columns[hoveredColumn];
         const hovered_piece = place_piece(column, tiles);
         if (columnNumber === hoveredColumn && index === hovered_piece) {
-            if (playerTurn == 0)
+            if (playerTurn == 1)
             {
-                hover_class = "bg-red-300"
+                hover_class = "rgb(254, 240, 238)"
+
             }
-            else if (playerTurn == 1)
+            else if (playerTurn == 0)
             {
-                hover_class = "bg-yellow-200"
+                hover_class = "rgb(254, 202, 202)"
+                console.log("red hover")
             }
         }
     }
@@ -49,7 +52,6 @@ function Cell({value, onClick, playerTurn, tiles, index, hoveredColumn, setHover
     let filled_color= "bg-slate-800"
     if (value == 0) {filled_color = "bg-red-500"}
     else if (value == 1) {filled_color = "bg-yellow-500"}
-
         return (
             <div
                 onClick={onClick}
